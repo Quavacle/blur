@@ -1,0 +1,14 @@
+def find_missing_number(sequence)
+  @sequence = sequence.split('').map(&:to_i)
+  counter = 0
+  stepper = 1
+    @sequence.each |number| 
+    if sequence(number) < sequence(number + 1)
+    return true
+    else
+    return false
+    end
+end
+end
+
+find_missing_number("1 1 1")

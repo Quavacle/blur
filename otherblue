@@ -1,0 +1,43 @@
+class Image
+
+
+  def initialize(pixle)
+    @pixle = pixle
+  end
+
+  def output_image
+    @pixle.each do |row|
+      puts row.join("")
+    end
+  end
+
+  def find_ones
+    ones = []
+    @pixle.each_with_index do |row, i|
+      row.each_with_index do |val, j|
+        if val == 1
+          ones << [i, j] 
+        end
+      end
+    end 
+
+
+     ones.each do |i, j|
+       @pixle[i][j - 1] = 1 unless j == 0
+       @pixle[i][j + 1] = 1 unless j == -1
+       @pixle[i - 1][j] = 1 unless i == 0
+       @pixle[i + 1][j] = 1 unless i == -1
+     end
+     output_image   
+  end
+
+end
+
+image = Image.new([
+  [1, 0, 0, 0],
+  [0, 0, 0, 1], #this one adds extra one outside array
+  [0, 0, 0, 0], 
+  [0, 0, 0, 1] #if last index is 0 it works
+])
+
+image.find_ones
