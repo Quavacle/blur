@@ -1,62 +1,45 @@
 class Image
-
-  def initialize(array)
-    @array = array
-    @row_length = array.length
-    @col_length = array[0].length
-
-  end 
+  def initialize(contents)
+    @main = contents
+  end
 
   def output_image
-    @array.each do |row|
-      row.each do |pixel|
-        print pixel, ' '
-      end 
-      puts    
-    end 
-  end 
-
-  def blur(row_index, col_index)
-    @array[row_index -1][col_index] = 1 unless row_index == 0
-    @array[row_index +1][col_index] = 1 unless row_index >= @row_length-1
-    @array[row_index][col_index -1] = 1 unless col_index == 0
-    @array[row_index][col_index +1] = 1 unless col_index >= @col_length-1
+    @main.each {|together| puts together.join('')} 
   end
 
-  def find_ones
-    one_pixel = []
+  def blur
+    locate
+    @location_array.each do |y, x|
+      @main[y -1][x] = 1 unless y == 0
+      @main[y +1][x] = 1 unless y == @main.count - 1
+      @main[y][x +1] = 1 unless x == @main.count - 1
+      @main[y][x -1] = 1 unless x == 0
+    end
+   end
 
-    @array.each_with_index do |row_array, row_index|
-        row_array.each_with_index do |cell, col_index|
-        if cell == 1
-          one_pixel << [row_index, col_index]
+  def locate
+    @location_array = []
+    @main.each_with_index do |r, y|
+      r.each_with_index do |value, x|
+        if value == 1
+          @location_array << [y, x]
         end
       end
-    end    
-    one_pixel  
+    end
   end
-
-
-  def transform
-    array_coords = find_ones
-
-    array_coords.each do |x, y|
-      blur(x, y)
-    end  
-  end
-
-
 end
-
 
 image = Image.new([
   [0, 0, 0, 0],
-  [0, 1, 0, 0],
+  [0 ,1, 0 ,0],
   [0, 0, 0, 1],
   [0, 0, 0, 0]
 ])
-
+puts "-----------------"
+puts "--Initial Image--"
 image.output_image
-puts "----"
-image.transform
+puts " "
+image.blur
+puts "--Blurred Image--"
 image.output_image
+puts "-----------------"
